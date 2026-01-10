@@ -32,11 +32,17 @@ def run(playwright: Playwright) -> None:
         page.goto("https://el.dhlottery.co.kr/game/pension720/game.jsp")
         print('✅ Navigated to Lotto 720 page')
         
+        # Dismiss popup if present
+        if page.locator("#popupLayerAlert").is_visible():
+            page.locator("#popupLayerAlert").get_by_role("button", name="확인").click()
+
         # Wait for the game UI to load
         page.locator(".lotto720_btn_auto_number").wait_for(state="visible", timeout=15000)
 
         # [자동번호] 클릭
         page.locator(".lotto720_btn_auto_number").click()
+        
+        time.sleep(1)
 
         # [선택완료] 클릭
         page.locator("a:has-text('선택 완료')").first.click()
